@@ -2,6 +2,8 @@
 
 using namespace std;
 
+#define my_assert(e) {cout << #e << ((e) ? " passed" : " failed") << endl;}
+
 void error(string word1, string word2, string msg) {
     cout << word1 << " and " << word2 << ": " << msg << endl;
 }
@@ -24,6 +26,8 @@ bool is_letter_insertion(const string& word1, const string& word2) {
     int i = 0, j = 0, num_diff = 0;
     while (i < len1 && j < len2) {
         if (word1[i] != word2[j]) {
+            if (num_diff == 1)
+                return false;
             ++num_diff;
             (len1 > len2) ? ++i : ++j;
         } else {
@@ -31,7 +35,7 @@ bool is_letter_insertion(const string& word1, const string& word2) {
             ++j;
         }
     }
-    return num_diff == 1;
+    return true;
 }
 
 bool is_adjacent(const string& word1, const string& word2) {
@@ -86,4 +90,14 @@ void print_word_ladder(const vector<string>& ladder) {
         cout << word << " ";
 }
 
-// void verify_word_ladder();
+
+void verify_word_ladder() {
+    set<string> word_list;
+    load_words(word_list, "words.txt");
+    my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
+    my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
+    my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
+    my_assert(generate_word_ladder("work", "play", word_list).size() == 6);
+    my_assert(generate_word_ladder("sleep", "awake", word_list).size() == 8);
+    my_assert(generate_word_ladder("car", "cheat", word_list).size() == 4);
+}

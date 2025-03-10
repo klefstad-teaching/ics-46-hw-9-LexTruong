@@ -9,17 +9,15 @@ void test_adjacent() {
 }
 
 void test_word_ladder() {
-    set<string> word_list;
-    load_words(word_list, "words.txt");
-    vector<string> ladder = generate_word_ladder("car", "cheat", word_list);
-    print_word_ladder(ladder);
-    cout << endl;
-    ladder = generate_word_ladder("Marty", "curls", word_list);
-    print_word_ladder(ladder);
-    cout << endl;
-    ladder = generate_word_ladder("code", "data", word_list);
-    print_word_ladder(ladder);
-    cout << endl;
+    // set<string> word_list;
+    // load_words(word_list, "words.txt");
+    // vector<string> ladder = generate_word_ladder("work", "play", word_list);
+    // print_word_ladder(ladder);
+    // cout << endl;
+    // ladder = generate_word_ladder("sleep", "awake", word_list);
+    // print_word_ladder(ladder);
+    // cout << endl;
+    verify_word_ladder();
 }
 
 int main() {
