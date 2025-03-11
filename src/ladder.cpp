@@ -55,6 +55,7 @@ vector<string> generate_word_ladder(const string& begin_word,
                                     const string& end_word, 
                                     const set<string>& word_list) {
     if (!is_in_word_list(end_word, word_list)) return {};
+    if (begin_word == end_word) return {begin_word};
     queue<vector<string>> ladder_queue;
     vector<string> ladder, new_ladder;
     string last_word;
