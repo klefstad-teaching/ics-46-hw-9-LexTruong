@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "ladder.h"
 
 using namespace std;
@@ -8,45 +9,40 @@ void error(string word1, string word2, string msg) {
     cout << word1 << " and " << word2 << ": " << msg << endl;
 }
 
-// bool edit_distance_within(const std::string& str1,
-//                             const std::string& str2, int d);
-
-bool is_letter_substitution(const string& word1, const string& word2) {
-    int len = word1.length();
-    int num_diff = 0;
-    for (int i=0; i < len; ++i)
-        if (word1[i] != word2[i])
-            ++num_diff;
-    return num_diff == 1;
-}
-
-bool is_letter_insertion(const string& word1, const string& word2) {
-    int len1 = word1.length();
-    int len2 = word2.length();
-    int i = 0, j = 0, num_diff = 0;
-    while (i < len1 && j < len2) {
-        if (word1[i] != word2[j]) {
-            if (num_diff == 1)
-                return false;
-            ++num_diff;
-            (len1 > len2) ? ++i : ++j;
-        } else {
-            ++i;
-            ++j;
+bool edit_distance_within(const std::string& str1,
+                            const std::string& str2, int d) {
+    int m = str1.size();
+    int n = str2.size();
+    if (abs(m - n) > d) return false;
+    std::vector<int> prev(n + 1), curr(n + 1);
+    
+    for (int j = 0; j <= n; ++j)
+        prev[j] = j;
+    
+    for (int i = 1; i <= m; ++i) {
+        curr[0] = i;
+        int min_in_row = curr[0];
+        
+        for (int j = 1; j <= n; ++j) {
+            if (str1[i - 1] == str2[j - 1]) {
+                curr[j] = prev[j - 1];
+            } else {
+                curr[j] = 1 + min({prev[j - 1], prev[j], curr[j - 1]});
+            }
+            min_in_row = min(min_in_row, curr[j]);
         }
+        
+        if (min_in_row > d) return false;
+        prev.swap(curr);
     }
-    return true;
+    
+    return prev[n] <= d;
 }
 
 bool is_adjacent(const string& word1, const string& word2) {
-    int len1 = word1.length();
-    int len2 = word2.length();
-    if (abs(len1-len2) > 1)
+    if (abs(word1.length()-word2.length();) > 1)
         return false;
-    else if (len1 == len2)
-        return is_letter_substitution(word1, word2);
-    else
-        return is_letter_insertion(word1, word2);
+    return edit_distance_within(word1, word2, 1);
 }
 
 vector<string> generate_word_ladder(const string& begin_word,
